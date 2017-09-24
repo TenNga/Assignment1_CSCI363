@@ -47,23 +47,39 @@ public class Solve {
         initialBoard = initial;
 
         Node currentNode = new Node(initial, null, 0);
-        open.put(currentNode.board.getFn(), currentNode);
 
-        while (!currentNode.board.isGoal() && !currentNode.board.isGoal()) {
+        open.put(currentNode.board.getFn(), currentNode);  //Expended Node store
+
+
+        while (!currentNode.board.isGoal() && !currentNode.board.isGoal()) {  //while not reached GOAL
             currentNode = open.pollFirstEntry().getValue();
+//            open.remove(open.firstKey());
+            System.out.println("First key"+currentNode.board.open.firstKey());
+          //  break;
+            if (currentNode.board.isGoal()) {
+                break;
+            } else {
 
-            for (Board b : currentNode.board.neighbors()) {
-                if (!b.equals(currentNode.board))
-                    open.put(currentNode.board.getFn(), new Node(b, currentNode, currentNode.moves + 1));
-            }
+                    for (Board b : currentNode.board.neighbors()) {
+                        System.out.println("First key"+currentNode.board.open.firstKey());
+                        if (!b.equals(currentNode.board)) {
+                            System.out.println("In Lopp..."+currentNode.board.getFn());
+                            open.put(currentNode.board.getFn(), new Node(b, currentNode, currentNode.moves + 1));
+                            break;
+                        }
+                    }
+                }
+
         }
 
         if (currentNode.board.isGoal())
             goalNode = currentNode;
-    }
+    } //end Solve
+
     public boolean isSolvable(){
         return goalNode != null;
     }
+
     public int move(){
         return goalNode.moves;
     }
