@@ -9,9 +9,12 @@ public class Board{
     private static final int SPACE =0;
 
     public LinkedList<Object> close = new LinkedList<>();
-    public TreeMap<Integer,int[][]> open = new TreeMap<>();
-    PriorityQueue pq = new PriorityQueue();
+    public TreeMap<Integer,Object> open = new TreeMap<>();
+//    PriorityQueue pq = new PriorityQueue();
 
+    private int[][] xNode;
+    private  int Bn;
+    public Board parent;
 
     int [][] goal = new int[][]{{1,2,3},
                                 {8,0,4},
@@ -25,32 +28,41 @@ public class Board{
 
     }
 
-//    public Board(int [][] Node){
-//        //Default
-//        size = Node.length;
-//       Node = deepCopy(goal);
-//
-//    }
-    public int hamming(int[][]x, int[][]y){
+    public Board(int [][] Node){
+        //Default
+        xNode = new int[Node.length][Node.length];
+        deepCopy(Node,xNode);
+        open.put(getFn(),xNode);
+
+
+    }
+    public int hamming(){ // returns displacement of tiles
         int displaced=0;
 
-        for(int i=0;i<x.length;i++)
-            for(int j=0;j<x.length;j++){
-                if(x[i][j]!=y[i][j])
+        for(int i=0;i<xNode.length;i++)
+            for(int j=0;j<xNode.length;j++){
+                if(goal[i][j]!=xNode[i][j])
                     displaced++;
             }
         return displaced;
     }
-    private int[][]deepCopy(int[][] from, int[][] here){
+    private void deepCopy(int[][] from, int[][] here){   // Copy FromArray to HereArray
         //int[][] copy = new int[][size];
         for (int i = 0; i < from.length; i++) {
             for (int j = 0; j < from.length; j++) {
                 here[i][j] =from[i][j];
             }
         }
-        return here;
     }
-    public static boolean compare (int[][] x, int[][] y){
+    public boolean isGoal(){   // Checkes current node is goals
+        for(int i=0;i<xNode.length;i++)
+            for(int j=0;j<xNode.length;j++)
+                if(goal[i][j] !=xNode[i][j]){
+                    return false;
+                }
+        return true;
+    }
+    public boolean compare (int[][] x, int[][] y){   // compare two array
         for(int i=0;i<x.length;i++)
             for(int j=0;j<x.length;j++)
                 if(x[i][j] !=y[i][j]){
@@ -58,22 +70,26 @@ public class Board{
                 }
         return true;
     }
-    public int getFn(int[][] node){
+    public int getFn(){   //returns F(n)= B(n)+H(n)
 
-        int Fn = (Gn+(hamming(goal,node)));
+        int Fn = (getBn()+(hamming()));
 
         return Fn;
     }
 
-    private int block(int[][]node,int row, int col) {
+    public int getBn(){  // return number of expension
+        return Bn;
+    }
+
+    private int block(int[][]node,int row, int col) {  //
         return node[row][col];
     }
 
-    public int dimension(int[][] node) {
+    public int dimension(int[][] node) {  //size of array
         return node.length;
     }
 
-    private int[][] swap(int[][] expend, int row1, int col1, int row2, int col2) {
+    private int[][] swap(int[][] expend, int row1, int col1, int row2, int col2) {  // Swaps two tiles and return now array
         int[][] copy = new int[expend.length][expend.length];
         deepCopy(expend,copy);
         int tmp = copy[row1][col1];
@@ -83,89 +99,97 @@ public class Board{
         return copy;
     }
 
-    private boolean isSpace(int block) {
+    private boolean isSpace(int block) {  //return space which is Zero
         return block == SPACE;
     }
 
-    public void checkArray(int[][] check){  //give an 2dArray to find its childs
-        int length = dimension(check);
-        int[][] y = new int[length][length];
+//    public void checkArray(int[][] check){  //give an 2dArray to find its childs
+//        int length = dimension(check);
+//        int[][] y = new int[length][length];
+//
+//        deepCopy(neighbors(check).getFirst(),y);
+//        int x = y.length;
+//
+//        boolean com = compare(goal,y);
+//
+//        while(!close.isEmpty()){
+//            for(int i=0;i<close.size();i++) {
+//                if (compare(y, close.get(i)))
+//                    System.out.println("We are done!");
+//                else{
+//
+//                }
+//            }
+//        }
+//
+//        if(com ==true)
+//             System.out.println("First Expend node is same with goal");
+//        else
+//            System.out.println("First Expend node IS-NOT same with goal");
+//
+//        int misplace = hamming(goal,y);
+//        System.out.println("Misplace between Goal: "+misplace);
+//
+//        System.out.println("First Neighbore Gn: "+Gn);
+//    }
+//
+//    public void run(){
+//        int fn = getFn(Start);
+//        open.put(fn,Start);
+//
+//        while(!isGoal(open.firstEntry().getValue())){
+//            if(isGoal(open.firstEntry().getValue()))
+//                System.out.println("We are done!");
+//            else{
+//                close.add(open.firstEntry().getValue());
+//
+//                checkArray(open.firstEntry().getValue());
+//                open.remove(fn);
+//            }
+//
+//
+//        }
+//
+//
+//    }
 
-        deepCopy(neighbors(check).getFirst(),y);
-        int x = y.length;
-
-        boolean com = compare(goal,y);
-
-        while(!close.isEmpty()){
-            for(int i=0;i<close.size();i++) {
-                if (compare(y, close.get(i)&&));
-            }
-        }
-
-        if(com ==true)
-             System.out.println("First Expend node is same with goal");
-        else
-            System.out.println("First Expend node IS-NOT same with goal");
-
-        int misplace = hamming(goal,y);
-        System.out.println("Misplace between Goal: "+misplace);
-
-        System.out.println("First Neighbore Gn: "+Gn);
-    }
-
-    public void run(){
-        int fn = getFn(Start);
-        open.put(fn,Start);
-
-        while(!isGoal(open.firstEntry().getValue())){
-            if(isGoal(open.firstEntry().getValue()))
-                System.out.println("We are done!");
-            else{
-                close.add(open.firstEntry().getValue());
-
-                checkArray(open.firstEntry().getValue());
-                open.remove(fn);
-            }
-
-
-        }
-
-
-    }
-
-    public boolean isGoal(int[][] check){
-        if(compare(check,goal))
-            return true;
-        else
-            return false;
-    }
-
-    public void arrayCopy(int[] from, int[] here){
+    public void arrayCopy(int[] from, int[] here){  // No-return void copy array
         for(int i=0;i<from.length;i++)
             here[i] = from[i];
     }
 
-    public LinkedList<int[][]> neighbors(int[][] expend) {
-        LinkedList<int[][]> neighbors = new LinkedList<>();
+    public LinkedList<Board> neighbors() {  // Expension of Childs of current board
+        LinkedList<Board> neighbors = new LinkedList<>();
 
         int[] location = new int[2];
 
-        arrayCopy(spaceLocation(expend),location);
+        arrayCopy(spaceLocation(xNode),location);
 //        location[0]=spaceLocation(expend)[0];
 
         int spaceRow = location[0];
         int spaceCol = location[1];
 
-        if (spaceRow > 0) {              neighbors.add((swap(expend,spaceRow, spaceCol, spaceRow - 1, spaceCol)));}
-        if (spaceRow < dimension(expend) - 1){  neighbors.add((swap(expend,spaceRow, spaceCol, spaceRow + 1, spaceCol)));}
-        if (spaceCol > 0)       {         neighbors.add((swap(expend,spaceRow, spaceCol, spaceRow, spaceCol - 1)));}
-        if (spaceCol < dimension(expend) - 1){   neighbors.add((swap(expend,spaceRow, spaceCol, spaceRow, spaceCol + 1)));}
+        if (spaceRow > 0) {
+            neighbors.add(new Board(swap(xNode,spaceRow, spaceCol, spaceRow - 1, spaceCol)));
+        }
+        if (spaceRow < dimension(xNode) - 1) {
+            neighbors.add(new Board(swap(xNode,spaceRow, spaceCol, spaceRow + 1, spaceCol)));
+        }
+        if (spaceCol > 0)       {
+            neighbors.add(new Board(swap(xNode,spaceRow, spaceCol, spaceRow, spaceCol - 1)));
+        }
+        if (spaceCol < dimension(xNode) - 1){
+            neighbors.add(new Board(swap(xNode,spaceRow, spaceCol, spaceRow, spaceCol + 1)));
+        }
         Gn++;
-
+//    while(!neighbors.isEmpty()){
+//        neighbors.getFirst();
+//    }
         return neighbors;
     }
 
-    private int[] spaceLocation(int[][] node) {
+
+    private int[] spaceLocation(int[][] node) {  // returns the location of empty tiles
         for (int row = 0; row < node.length; row++)
             for (int col = 0; col < node.length; col++)
                 if (isSpace(block(node,row, col))) {
