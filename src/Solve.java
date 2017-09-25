@@ -56,6 +56,7 @@ public class Solve {
             currentNode = open.pollFirstEntry().getValue();  //This node to be expend
 
             outerloop:
+            //system.out.print();
 //            open.remove(open.firstKey());
             //System.out.println("First key"+currentNode.board.open.firstKey());
 
