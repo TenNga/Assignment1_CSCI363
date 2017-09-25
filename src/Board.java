@@ -13,7 +13,7 @@ public class Board{
 //    PriorityQueue pq = new PriorityQueue();
 
     private int[][] xNode;
-    private  int Bn;
+    //private  int Bn;
     public Board parent;
 
     int [][] goal = new int[][]{{1,2,3},
@@ -72,13 +72,17 @@ public class Board{
     }
     public int getFn(){   //returns F(n)= B(n)+H(n)
 
-        int Fn = (getBn()+(hamming()));
+        int Fn = (getGn()+(hamming()));
 
         return Fn;
     }
 
-    public int getBn(){  // return number of expension
-        return Bn;
+    public int getGn(){  // return number of expension
+        return Gn;
+    }
+
+    public  void setGn(int x){
+        Gn = x;
     }
 
     private int block(int[][]node,int row, int col) {  //
@@ -165,7 +169,7 @@ public class Board{
 
         arrayCopy(spaceLocation(xNode),location);
 //        location[0]=spaceLocation(expend)[0];
-
+        Gn++;
         int spaceRow = location[0];
         int spaceCol = location[1];
 
@@ -181,7 +185,7 @@ public class Board{
         if (spaceCol < dimension(xNode) - 1){
             neighbors.add(new Board(swap(xNode,spaceRow, spaceCol, spaceRow, spaceCol + 1)));
         }
-        Gn++;
+
 //    while(!neighbors.isEmpty()){
 //        neighbors.getFirst();
 //    }
@@ -202,17 +206,17 @@ public class Board{
         throw new RuntimeException();
     }
 
-//    public String toString(int[][] x) {
-//        StringBuilder str = new StringBuilder();
-//        str.append(dimension() + "\n");
-//        for (int row = 0; row < x.length; row++) {
-//            for (int col = 0; col < x.length; col++)
-//                str.append(String.format("%2d ", block(x,row, col)));
-//            str.append("\n");
-//        }
-//
-//        return str.toString();
-//    }
+    public String toString() {
+        StringBuilder str = new StringBuilder();
+        str.append( "\n");
+        for (int row = 0; row < xNode.length; row++) {
+            for (int col = 0; col < xNode.length; col++)
+                str.append(String.format("%2d ", block(xNode,row, col)));
+            str.append("\n");
+        }
+
+        return str.toString();
+    }
 
 
 

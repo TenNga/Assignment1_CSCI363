@@ -12,13 +12,13 @@ public class Solve {
                                         {8,6,2},
                                         {7,0,5}};
 
-    static public LinkedList<Object> close = new LinkedList<>();
+    static public LinkedList<Node> close = new LinkedList<>();
     static public TreeMap<Integer,Node> open = new TreeMap<>();
 
     //public  Board board = new Board(Start);
 
     private Node goalNode;
-
+    private int Gn=0;
     public class Node implements Comparable<Node>{
         public Board board;
         public Node previous;
@@ -48,33 +48,67 @@ public class Solve {
 
         Node currentNode = new Node(initial, null, 0);
 
-        open.put(currentNode.board.getFn(), currentNode);  //Expended Node store
+        open.put(currentNode.board.getFn(), currentNode);  //Insert in open list
 
 
         while (!currentNode.board.isGoal() && !currentNode.board.isGoal()) {  //while not reached GOAL
-            currentNode = open.pollFirstEntry().getValue();
+
+            currentNode = open.pollFirstEntry().getValue();  //This node to be expend
+
+            outerloop:
 //            open.remove(open.firstKey());
-            System.out.println("First key"+currentNode.board.open.firstKey());
-          //  break;
+            //System.out.println("First key"+currentNode.board.open.firstKey());
+
             if (currentNode.board.isGoal()) {
                 break;
-            } else {
+            } else{
+                    close.add(currentNode);
 
                     for (Board b : currentNode.board.neighbors()) {
-                        System.out.println("First key"+currentNode.board.open.firstKey());
+
                         if (!b.equals(currentNode.board)) {
-                            System.out.println("In Lopp..."+currentNode.board.getFn());
-                            open.put(currentNode.board.getFn(), new Node(b, currentNode, currentNode.moves + 1));
-                            break;
+
+                            System.out.println("F(n): "+b.getFn());
+                            System.out.println("G(n): "+b.getGn());
+                            System.out.println("H(n): "+b.hamming());
+                            System.out.println("**************************");
+
+                            open.put(b.getFn(), new Node(b, currentNode, currentNode.moves + 1));
+                            System.out.println("Neibore: "+b.toString());
+
+                            for(Node n: close){
+                                if(n.equals(b)) {
+                                    System.out.println("Found same Board");
+                                    break outerloop;
+                                }
+                            }
+
                         }
+                        else{
+                            System.out.println("CurrentNode: "+b.toString());
+                        }
+
                     }
-                }
+
+                }currentNode.board.setGn(Gn++);
+
 
         }
 
         if (currentNode.board.isGoal())
             goalNode = currentNode;
     } //end Solve
+
+    public Iterable<Board> solution(){
+        PriorityQueue<Board> trace = new PriorityQueue<>();
+        trace.add(goalNode.board);
+        while (goalNode.previous != null){
+            goalNode = goalNode.previous;
+            trace.add(goalNode.board);
+        }
+
+        return trace;
+    }
 
     public boolean isSolvable(){
         return goalNode != null;
@@ -122,8 +156,8 @@ public class Solve {
             System.out.println("No solution possible");
         else {
             System.out.println("Minimum number of moves = " + solver.move());
-//            for (Board board : solver.solution())
-//                System.out.println(board);
+            for (Board board : solver.solution())
+                System.out.println(board.toString());
         }
 
 
