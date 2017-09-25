@@ -4,13 +4,13 @@ import java.util.PriorityQueue;
 import  java.util.Iterator;
 
 public class Solve {
-//    int [][] goal = new int[][]{{1,2,3},
-//                                {8,0,4},
-//                                {7,6,5}};
+    static int [][] Start = new int[][]{{1,2,3},
+                                {0,8,4},
+                                {7,6,5}};
 //
-    static int [][] Start = new int[][]{{1,3,4},
-                                        {8,6,2},
-                                        {7,0,5}};
+//    static int [][] Start = new int[][]{{1,3,4},
+//                                        {8,6,2},
+//                                        {7,0,5}};
 
     static public LinkedList<Node> close = new LinkedList<>();
     static public TreeMap<Integer,Node> open = new TreeMap<>();
@@ -44,14 +44,15 @@ public class Solve {
     public Solve(Board initial) {
         Board initialBoard;
         PriorityQueue<Board> neighbors = new PriorityQueue<>();
-        initialBoard = initial;
+       // initialBoard = initial;
 
         Node currentNode = new Node(initial, null, 0);
 
         open.put(currentNode.board.getFn(), currentNode);  //Insert in open list
+        //System.out.println("First Node: ");
 
 
-        while (!currentNode.board.isGoal() && !currentNode.board.isGoal()) {  //while not reached GOAL
+        while (!currentNode.board.isGoal()) {  //while not reached GOAL
 
             currentNode = open.pollFirstEntry().getValue();  //This node to be expend
 
@@ -64,34 +65,40 @@ public class Solve {
                 break;
             } else{
                     close.add(currentNode);
+                int g = Gn++;
 
                     for (Board b : currentNode.board.neighbors()) {
-
-                        if (!b.equals(currentNode.board)) {
-
-                            System.out.println("F(n): "+b.getFn());
-                            System.out.println("G(n): "+b.getGn());
-                            System.out.println("H(n): "+b.hamming());
-                            System.out.println("**************************");
-
-                            open.put(b.getFn(), new Node(b, currentNode, currentNode.moves + 1));
-                            System.out.println("Neibore: "+b.toString());
-
-                            for(Node n: close){
-                                if(n.equals(b)) {
-                                    System.out.println("Found same Board");
-                                    break outerloop;
+                        b.setGn(g);
+                        if (b.isGoal()) {
+                            break ;
+                        }
+                        else if(!b.isGoal()){
+                                for(Node n: close){
+                                    if(n.equals(b)) {
+                                        System.out.println("Found same Board");
+                                        break outerloop;
+                                    }
                                 }
+                                System.out.println("F(n): "+b.getFn());
+                                System.out.println("G(n): "+b.getGn());
+                                System.out.println("H(n): "+b.hamming());
+
+
+                                open.put(b.getFn(), new Node(b, currentNode, currentNode.moves + 1));
+                                System.out.println("Neibore: "+b.toString());
+                                System.out.println("**************************");
+
+
+
+                        } else{
+                                System.out.println("CurrentNode: "+b.toString());
                             }
 
-                        }
-                        else{
-                            System.out.println("CurrentNode: "+b.toString());
-                        }
+
 
                     }
 
-                }currentNode.board.setGn(Gn++);
+                }
 
 
         }
