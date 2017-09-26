@@ -57,9 +57,8 @@ public class Board{
     public boolean isGoal(){   // Checkes current node is goals
         for(int i=0;i<xNode.length;i++)
             for(int j=0;j<xNode.length;j++)
-                if(goal[i][j] !=xNode[i][j]){
-                    return false;
-                }
+                if (goal[i][j] != xNode[i][j])
+                        return false;
         return true;
     }
     public boolean compare (int[][] x, int[][] y){   // compare two array
@@ -169,7 +168,7 @@ public class Board{
 
         arrayCopy(spaceLocation(xNode),location);
 //        location[0]=spaceLocation(expend)[0];
-        Gn++;
+        //Gn++;
         int spaceRow = location[0];
         int spaceCol = location[1];
 
