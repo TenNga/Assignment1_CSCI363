@@ -12,26 +12,39 @@ public class Solve {
                                         {8,6,2},
                                         {7,0,5}};
 
+//    static int[][] Start = new int[][]{{2,8,1},{0,4,3},{7,6,5}};
+
+//        static int [][] Start = new int[][]{{2,8,1},
+//                                        {4,6,3},
+//                                        {0,7,5}};
+
     static public LinkedList<Node> close = new LinkedList<>();
-    static public TreeMap<Integer,Node> open = new TreeMap<>();
+    static public PriorityQueue<Node> open = new PriorityQueue<>();
 
     //public  Board board = new Board(Start);
 
     private Node goalNode;
     private int Gn=0;
-    public class Node implements Comparable<Board>{
+    static private int NodeExp =0;
+
+    public class Node implements Comparable<Node>{
         public Board board;
         public Node previous;
         public int moves;
-
-        public int compareTo(Board that){
+    @Override
+        public int compareTo(Node that){
             //StdOut.println("i:" + this.priority() + " j:" + that.priority() + " "+ ((this.priority() > that.priority()) ? 1 :  -1));
-//            if(this.priority() == that.priority()) return 0;
-//            return (this.priority() > that.priority()) ? 1 :  -1;
-            if(this.board==that)
-                return  1;
-            else
+            if(this.priority() == (that.priority()))
                 return 0;
+            else if(this.priority()< that.priority())
+                return -1;
+            else
+                return 1;
+
+//            if(this.board.equals(that))
+//                return  1;
+//            else
+//                return 0;
 
         }
 
@@ -41,30 +54,32 @@ public class Solve {
             moves = m;
         }
 
-//        public int priority(){
-//            return board.hamming() + moves;
-//        }
+        public int priority(){
+            return board.hamming() + Gn;
+        }
     }
 
     public Solve(Board initial) {
-        Board initialBoard;
-        PriorityQueue<Board> neighbors = new PriorityQueue<>();
+        //Board initialBoard;
+     //   PriorityQueue<Board> neighbors = new PriorityQueue<>();
        // initialBoard = initial;
 
         Node currentNode = new Node(initial, null, 0);
 
-        open.put(currentNode.board.getFn(), currentNode);  //Insert in open list
+        open.add( currentNode);  //Insert in open list
         //System.out.println("First Node: ");
-
 
         while (!currentNode.board.isGoal()) {  //while not reached GOAL
 
-            currentNode = open.pollFirstEntry().getValue();  //remove from OpenList Return
+
+            currentNode = open.remove();  //remove from OpenList Return
             System.out.println("F(n): "+currentNode.board.getFn());
             System.out.println("G(n): "+currentNode.board.getGn());
             System.out.println("H(n): "+currentNode.board.hamming());
+            //System.out.println("MoveBlank: "+currentNode.board.getMoveBlank());
 //
-            System.out.println("Neibore: "+currentNode.board.toString());
+            System.out.println("Choosen Node: "+currentNode.board.toString());
+
             System.out.println("**************************");
 
             //system.out.print();
@@ -72,17 +87,20 @@ public class Solve {
             //System.out.println("First key"+currentNode.board.open.firstKey());
 
             close.add(currentNode); //Insert in to CloseList
+            printOpen();
+            printClose();
                 Gn++;
-
+                NodeExp++;
                     for (Board b : currentNode.board.neighbors()) {  //for every childs insert in OpenList
                         b.setGn(Gn);          //increase Level
-                        for(Node n: close){
-                            if(n.compareTo(b)==1) {
-                                System.out.println("Found same Board");
-                                System.out.println("**************************");
-                                continue;
-                            }
-                        }
+
+//                        for(Node n: close){  //for every node in CloseList
+//                            if(n.compareTo(b)==0) {
+//                                System.out.println("Found same Board");
+//                                System.out.println("**************************");
+//                                continue;
+//                            }
+//                        }
 //                        System.out.println("F(n): "+b.getFn());
 //                        System.out.println("G(n): "+b.getGn());
 //                        System.out.println("H(n): "+b.hamming());
@@ -90,7 +108,7 @@ public class Solve {
 //                        System.out.println("Neibore: "+b.toString());
 //                        System.out.println("**************************");
 
-                        open.put(b.getFn(), new Node(b, currentNode, currentNode.moves + 1)); // Insert all child in OpenList
+                        open.add(new Node(b, currentNode, currentNode.moves + 1)); // Insert all child in OpenList
 //                        if (b.isGoal()) {
 //                            System.out.println("Goal Found");
 //                            System.out.println("**************************");
@@ -149,8 +167,22 @@ public class Solve {
         return goalNode.moves;
     }
 
-    public static void main(String[] args){
+    public void printOpen(){
+        System.out.print("Open List: ");
+        for(Node n: open){
+            System.out.print(n.board.getFn()+" ");
+        }
+        System.out.println("");
+    }
+    public void printClose(){
+        System.out.print("Close List: ");
+        for(Node c: close)
+            System.out.print(c.board.getFn()+" ");
+        System.out.println("");
+    }
 
+    public static void main(String[] args){
+    long StartTime = System.currentTimeMillis();
 //        System.out.println("Starting the test");
 //        if(compare(goal,Start)==true)
 //            System.out.println("both goal and start are same.");
@@ -191,7 +223,11 @@ public class Solve {
 //                System.out.println(board.toString());
         }
 
-
+    long EndTime = System.currentTimeMillis();
+        long duration = (EndTime - StartTime);
+        System.out.println("//================================//");
+        System.out.println("NODE EXPENDED: "+NodeExp);
+        System.out.println("Execution Time: "+duration);
     }
 
 

@@ -6,27 +6,30 @@ public class Board{
     private int Hn;  //displace tiles #
     private int Fn;  //===> (Gn + Hn)
     private int Gn=0;  //cost so far
+  //  private String moveBlank;
     private static final int SPACE =0;
 
     public LinkedList<Object> close = new LinkedList<>();
     public TreeMap<Integer,Object> open = new TreeMap<>();
+   // public LinkedList<String> moveSequence = new LinkedList<>();
 //    PriorityQueue pq = new PriorityQueue();
 
     private int[][] xNode;
     //private  int Bn;
-    public Board parent;
+   // public Board parent;
 
     int [][] goal = new int[][]{{1,2,3},
                                 {8,0,4},
                                 {7,6,5}};
 
-    int [][] Start = new int[][]{{1,3,4},{8,6,2},{7,0,5}};
+    //int [][] Start = new int[][]{{1,3,4},{8,6,2},{7,0,5}};
 
 
     public Board(){
         //Default constructor
 
     }
+
 
     public Board(int [][] Node){
         //Default
@@ -41,7 +44,9 @@ public class Board{
 
         for(int i=0;i<xNode.length;i++)
             for(int j=0;j<xNode.length;j++){
-                if(goal[i][j]!=xNode[i][j])
+                if(goal[i][j] ==0)
+                    continue;
+                else if(goal[i][j]!=xNode[i][j])
                     displaced++;
             }
         return displaced;
@@ -61,14 +66,14 @@ public class Board{
                         return false;
         return true;
     }
-    public boolean compare (int[][] x, int[][] y){   // compare two array
-        for(int i=0;i<x.length;i++)
-            for(int j=0;j<x.length;j++)
-                if(x[i][j] !=y[i][j]){
-                    return false;
-                }
-        return true;
-    }
+//    public boolean compare (int[][] x, int[][] y){   // compare two array
+//        for(int i=0;i<x.length;i++)
+//            for(int j=0;j<x.length;j++)
+//                if(x[i][j] !=y[i][j]){
+//                    return false;
+//                }
+//        return true;
+//    }
     public int getFn(){   //returns F(n)= B(n)+H(n)
 
         int Fn = (getGn()+(hamming()));
@@ -84,6 +89,10 @@ public class Board{
         Gn = x;
     }
 
+//    public String getMoveBlank(){
+//        return moveBlank;
+//    }
+
     private int block(int[][]node,int row, int col) {  //
         return node[row][col];
     }
@@ -91,6 +100,8 @@ public class Board{
     public int dimension(int[][] node) {  //size of array
         return node.length;
     }
+
+
 
     private int[][] swap(int[][] expend, int row1, int col1, int row2, int col2) {  // Swaps two tiles and return now array
         int[][] copy = new int[expend.length][expend.length];
@@ -174,15 +185,19 @@ public class Board{
 
         if (spaceRow > 0) {
             neighbors.add(new Board(swap(xNode,spaceRow, spaceCol, spaceRow - 1, spaceCol)));
+
         }
         if (spaceRow < dimension(xNode) - 1) {
             neighbors.add(new Board(swap(xNode,spaceRow, spaceCol, spaceRow + 1, spaceCol)));
+
         }
         if (spaceCol > 0)       {
             neighbors.add(new Board(swap(xNode,spaceRow, spaceCol, spaceRow, spaceCol - 1)));
+
         }
         if (spaceCol < dimension(xNode) - 1){
             neighbors.add(new Board(swap(xNode,spaceRow, spaceCol, spaceRow, spaceCol + 1)));
+
         }
 
 //    while(!neighbors.isEmpty()){
