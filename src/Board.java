@@ -66,14 +66,14 @@ public class Board{
                         return false;
         return true;
     }
-//    public boolean compare (int[][] x, int[][] y){   // compare two array
-//        for(int i=0;i<x.length;i++)
-//            for(int j=0;j<x.length;j++)
-//                if(x[i][j] !=y[i][j]){
-//                    return false;
-//                }
-//        return true;
-//    }
+    public boolean compare (int[][] x){   // compare two array
+        for(int i=0;i<x.length;i++)
+            for(int j=0;j<x.length;j++)
+                if(x[i][j] !=this.xNode[i][j])
+                    return false;
+
+        return true;
+    }
     public int getFn(){   //returns F(n)= B(n)+H(n)
 
         int Fn = (getGn()+(hamming()));
@@ -87,6 +87,9 @@ public class Board{
 
     public  void setGn(int x){
         Gn = x;
+    }
+    public int[][] getElement(){
+        return xNode;
     }
 
 //    public String getMoveBlank(){
@@ -195,7 +198,7 @@ public class Board{
             neighbors.add(new Board(swap(xNode,spaceRow, spaceCol, spaceRow, spaceCol - 1)));
 
         }
-        if (spaceCol < dimension(xNode) - 1){
+        if (spaceCol < dimension(xNode) - 1){ //RIGHT
             neighbors.add(new Board(swap(xNode,spaceRow, spaceCol, spaceRow, spaceCol + 1)));
 
         }
