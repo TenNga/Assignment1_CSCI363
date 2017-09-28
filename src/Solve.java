@@ -5,8 +5,8 @@ import  java.util.Iterator;
 
 public class Solve {
 //    static int [][] Start = new int[][]{{1,2,3},
-//                                {0,8,4},
-//                                {7,6,5}};
+//                                {7,8,4},
+//                                {0,6,5}};
 //////
 //   static int [][] Start = new int[][]{{1,3,4},
 //                                        {8,6,2},
@@ -21,6 +21,8 @@ public class Solve {
     static int [][] Start = new int[][]{{5,6,7},
                                         {4,0,8},
                                         {3,2,1}};
+
+
 
    // static public LinkedList<Node> close = new LinkedList<>();
     static public HashMap<String,Node> close = new HashMap<>();
@@ -76,14 +78,17 @@ public class Solve {
 
         while (!currentNode.board.isGoal()) {  //while not reached GOAL
 
-            currentNode = open.remove();  //remove from OpenList Return
+            currentNode = open.remove();  //remove minimum F(n) from OpenList Return
 
-            if(close.containsKey(Arrays.deepToString((currentNode.board.getElement())))) {
+            String currentNodeKey = Arrays.deepToString(currentNode.board.getElement());
+
+            if(close.containsKey(currentNodeKey) && (close.get(currentNodeKey).board.getGn() <= currentNode.board.getGn())){
                 System.out.println("Same board found!!");
-
+                System.out.println("**************************");
                 // close.put(Arrays.toString(b.getElement()),currentNode);
             }
             else {
+                close.put(Arrays.deepToString(currentNode.board.getElement()), currentNode);
 
                 System.out.println("F(n): " + currentNode.board.getFn());
                 System.out.println("G(n): " + currentNode.board.getGn());
@@ -92,16 +97,16 @@ public class Solve {
 //
                 System.out.println("Choosen Node: " + currentNode.board.toString());
 
-                System.out.println("**************************");
+
 
                 //system.out.print();
 //            open.remove(open.firstKey());
                 //System.out.println("First key"+currentNode.board.open.firstKey());
 
                 //close.add(currentNode); //Insert in to CloseList
-                close.put(Arrays.deepToString(currentNode.board.getElement()), currentNode);
+
                 printOpen();
-                // printClose();
+                printClose();
 
                 NodeExp++;
                 for (Board b : currentNode.board.neighbors()) {  //for every childs insert in OpenList
@@ -160,9 +165,11 @@ public class Solve {
 //                            }
 
                 }//for loop
+                 System.out.println("**************************");
 
 
-            }//else ends
+            }//else if ends
+
         } //While Loop
 
         if (currentNode.board.isGoal())
@@ -195,12 +202,12 @@ public class Solve {
         }
         System.out.println("");
     }
-//    public void printClose(){
-//        System.out.print("Close List: ");
-//        for(Node c: close)
-//            System.out.print(c.board.getFn()+" ");
-//        System.out.println("");
-//    }
+    public void printClose(){
+        System.out.print("Close List: ");
+        for(Node c: close.values())
+            System.out.print(c.board.getFn()+" ");
+        System.out.println("");
+    }
 
     public static void main(String[] args){
     long StartTime = System.currentTimeMillis();

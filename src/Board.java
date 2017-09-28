@@ -15,6 +15,7 @@ public class Board{
 //    PriorityQueue pq = new PriorityQueue();
 
     private int[][] xNode;
+
     //private  int Bn;
    // public Board parent;
 
@@ -51,6 +52,29 @@ public class Board{
             }
         return displaced;
     }
+    public int manhattan() {
+        int sum = 0;
+        for (int row = 0; row < xNode.length; row++)
+            for (int col = 0; col < xNode.length; col++)
+                sum += calculateDistances(row, col);
+
+        return sum;
+    }
+    private int calculateDistances(int row, int col) {
+        int block = block(row, col);
+
+        return (isSpace(block)) ? 0 : Math.abs(row - row(block)) + Math.abs(col - col(block));
+    }
+    private int block(int row, int col) {
+        return xNode[row][col];
+    }
+    private int row (int block) {
+        return (block - 1) / dimension(xNode);
+    }
+
+    private int col (int block) {
+        return (block - 1) % dimension(xNode);
+    }
     private void deepCopy(int[][] from, int[][] here){   // Copy FromArray to HereArray
         //int[][] copy = new int[][size];
         for (int i = 0; i < from.length; i++) {
@@ -76,7 +100,7 @@ public class Board{
     }
     public int getFn(){   //returns F(n)= B(n)+H(n)
 
-        int Fn = (getGn()+(hamming()));
+        int Fn = (getGn()+hamming());
 
         return Fn;
     }
