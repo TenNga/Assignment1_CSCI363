@@ -76,7 +76,7 @@ public class Solve {
 
         open.add( currentNode);  //Insert in open list
         //System.out.println("First Node: ");
-
+        int stop =0;
         while (!currentNode.board.isGoal()) {  //while not reached GOAL
 
             currentNode = open.remove();  //remove minimum F(n) from OpenList Return
@@ -108,7 +108,7 @@ public class Solve {
 
                  System.out.println("**************************");
             }//else if ends
-
+            stop++;
         } //While Loop
 
         if (currentNode.board.isGoal())
