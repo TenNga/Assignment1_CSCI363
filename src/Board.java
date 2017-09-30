@@ -100,7 +100,7 @@ public class Board{
     }
     public int getFn(){   //returns F(n)= B(n)+H(n)
 
-        int Fn = (getGn()+hamming());
+        int Fn = (getGn()+manhattan());
 
         return Fn;
     }
