@@ -36,6 +36,7 @@ public class aStar {
             return board.getFn();
         }
     }
+    int nodeVisit=1;
     public aStar(Board initial) {
         Node currentNode = new Node(initial, null, 0);
 
@@ -49,10 +50,10 @@ public class aStar {
 
             NodeExp++; //increment node expend variable
             for (Board b : currentNode.board.neighbors()) {  //for every childs insert in OpenList
-                if (close.containsKey(Arrays.deepToString(b.getElement()))) {
+                if (close.containsKey(Arrays.deepToString(b.getElement()))) {nodeVisit++;
                     //   System.out.println("SameBoard Don't put in OpenList");
                     continue; // Skip this iteration
-                } else {
+                } else {nodeVisit++;
                     b.setGn(currentNode.board.getGn() + 1);          //increase Level
                     open.add(new Node(b, currentNode, currentNode.moves + 1)); //create new node and add to Openlist
                 }
@@ -74,6 +75,7 @@ public class aStar {
 
     public void print() {
 
+        long startTime = System.nanoTime();
 
         if (!isSolvable())
             System.out.println("No solution possible");
@@ -85,6 +87,10 @@ public class aStar {
             System.out.println("");
 
         }
+        long endTime = System.nanoTime();
+        long duration=(endTime-startTime);
+        System.out.println("Execution time: "+duration);
+
     }
 
 

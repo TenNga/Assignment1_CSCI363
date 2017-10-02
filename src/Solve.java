@@ -9,16 +9,24 @@ public class Solve {
     static int[][] Worst = new int[][]{{5, 6, 7}, {4, 0, 8}, {3, 2, 1}};
     static LinkedList<int[][]> list = new LinkedList<>();
     public static void main(String[] args) {
-            list.add(Easy);
-            list.add(Medium);
-            list.add(Hard);
-            list.add(Worst);
 
-            Board initial = new Board(list.get(0));
+            list.add(Easy); //------- 0
+            list.add(Medium);//------- 1
+            list.add(Hard);//------- 2
+            list.add(Worst);//------- 3
+        /*
+        CHOOSE STATE
+        (****************************************************************);
+        (Easy -- 0 || Medium -- 1 || Hard -- 2 || Worst -- 3 || EXIT -- 4);
+        (****************************************************************);
+     */
+            Board initial = new Board(list.get(3));
             aStar solver = new aStar(initial);
             IdAstart solver2 = new IdAstart(initial);
             AstarManh solver3 = new AstarManh(initial);
             DFBB solver4 = new DFBB(initial);
+
+
     }
 
 

@@ -105,16 +105,18 @@ public class AstarManh {
     }
     public void print() {
 
-
+        long startTime = System.nanoTime();
         if (!isSolvable())
             System.out.println("No solution possible");
         else {
-            System.out.println("//////////////////---[ A* Algorithm ]---/////////////////\n");
+            System.out.println("//////////////////---[ A* Manhattan Algorithm ]---/////////////////\n");
             System.out.println("Minimum number of moves = " + move());
             System.out.println("NODE EXPENDED: " + NodeExp);
 
             System.out.println("");
-
         }
+        long endTime = System.nanoTime();
+        long duration=(endTime-startTime);
+        System.out.println("Execution time: "+duration);
     }
 }

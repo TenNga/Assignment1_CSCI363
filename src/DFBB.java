@@ -8,30 +8,30 @@ public class DFBB {
     private Node goalNode;
     static private int NodeExp = 0;
 
-    public class Node implements Comparable<Node> {
+    public class Node {
         public Board board;
         public Node previous;
         public int moves;
-
-        @Override
-        public int compareTo(Node that) {
-            if (this.priority() == (that.priority()))
-                return 0;
-            else if (this.priority() < that.priority())
-                return -1;
-            else
-                return 1;
-        }
-
+//
+//        @Override
+//        public int compareTo(Node that) {
+//            if (this.priority() == (that.priority()))
+//                return 0;
+//            else if (this.priority() < that.priority())
+//                return -1;
+//            else
+//                return 1;
+//        }
+//
         public Node(Board b, Node prev, int m) {
             board = b;
             previous = prev;
             moves = m;
         }
-
-        public int priority() {
-            return board.getFnManh();
-        }
+//
+//        public int priority() {
+//            return board.getFnManh();
+//        }
     }
 
     public DFBB(Board initial) {
@@ -39,16 +39,20 @@ public class DFBB {
 
         //open.add(currentNode);  //Insert in open list
         open.push(currentNode);
-
-        while (!currentNode.board.isGoal()) {  //while not reached GOAL
-
+        int cost=open.peek().board.manhattan();;
+        while (!open.isEmpty()) {  //while not reached GOAL
+            
             currentNode = open.pop();
-
+            if(currentNode.board.isGoal()){
+                System.out.println("Goal: "+currentNode.board.toString());
+                if(currentNode.board.manhattan()<cost)
+                     cost=currentNode.board.manhattan();
+            }
             close.put(Arrays.deepToString(currentNode.board.getElement()), currentNode);
 
             NodeExp++; //increment node expend variable
             for (Board b : currentNode.board.neighbors()) {  //for every childs insert in OpenList
-                if (close.containsKey(Arrays.deepToString(b.getElement()))) {
+                if (close.containsKey(Arrays.deepToString(b.getElement()))|| b.manhattan()>cost) {
                     //   System.out.println("SameBoard Don't put in OpenList");
                     continue; // Skip this iteration
                 } else {
@@ -74,7 +78,7 @@ public class DFBB {
     }
     public void print() {
 
-
+        long startTime = System.nanoTime();
         if (!isSolvable())
             System.out.println("No solution possible");
         else {
@@ -85,6 +89,9 @@ public class DFBB {
             System.out.println("");
 
         }
+        long endTime = System.nanoTime();
+        long duration=(endTime-startTime);
+        System.out.println("Execution time: "+duration);
     }
 
 

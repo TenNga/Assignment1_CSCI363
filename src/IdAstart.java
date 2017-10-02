@@ -95,7 +95,7 @@ public class IdAstart {
     }
     public void print() {
 
-
+        long startTime = System.nanoTime();
         if (!isSolvable())
             System.out.println("No solution possible");
         else {
@@ -106,6 +106,9 @@ public class IdAstart {
             System.out.println("");
 
         }
+        long endTime = System.nanoTime();
+        long duration=(endTime-startTime);
+        System.out.println("Execution time: "+duration);
     }
 
 }

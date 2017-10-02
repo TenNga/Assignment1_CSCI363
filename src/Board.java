@@ -2,29 +2,19 @@ import java.util.*;
 
 public class Board{
     private int size;
-    //private final int[][] tiles;
     private int Hn;  //displace tiles #
     private int Fn;  //===> (Gn + Hn)
     private int Gn=0;  //cost so far
-  //  private String moveBlank;
     private static final int SPACE =0;
 
     public LinkedList<Object> close = new LinkedList<>();
     public TreeMap<Integer,Object> open = new TreeMap<>();
-   // public LinkedList<String> moveSequence = new LinkedList<>();
-//    PriorityQueue pq = new PriorityQueue();
 
     private int[][] xNode;
-
-    //private  int Bn;
-   // public Board parent;
 
     int [][] goal = new int[][]{{1,2,3},
                                 {8,0,4},
                                 {7,6,5}};
-
-    //int [][] Start = new int[][]{{1,3,4},{8,6,2},{7,0,5}};
-
 
     public Board(){
         //Default constructor
@@ -70,30 +60,6 @@ public class Board{
             }
             return sum;
     }
-
-//    public int manhattan() {
-//        int sum = 0;
-//        for (int row = 0; row < xNode.length; row++)
-//            for (int col = 0; col < xNode.length; col++)
-//                sum += calculateDistances(row, col);
-//
-//        return sum;
-//    }
-//    private int calculateDistances(int row, int col) {
-//        int block = block(row, col);
-//
-//        return (isSpace(block)) ? 0 : Math.abs (Math.abs(col - col(block))-(row - row(block)));
-//    }
-//    private int block(int row, int col) {
-//        return xNode[row][col];
-//    }
-//    private int row (int block) {
-//        return (block - 1) / dimension(xNode);
-//    }
-//
-//    private int col (int block) {
-//        return (block - 1) % dimension(xNode);
-//    }
     int[] calculateDistance(int lookFor){  //
         int[] location = new int[2];
         for(int i=0;i<goal.length;i++)
@@ -138,25 +104,23 @@ public class Board{
 
         return Fn;
     }
-    public int getFnManh(){
+    public int getFnManh(){  // heuristic with manhattan
         int Fn = (Gn+manhattan());
         return Fn;
     }
 
     public int getGn(){  // return number of expension
         return Gn;
-    }
+    }  // level of board
 
     public  void setGn(int x){
         Gn = x;
-    }
+    }  // change level of board
     public int[][] getElement(){
         return xNode;
-    }
+    }  // acces to the board from node
 
-//    public String getMoveBlank(){
-//        return moveBlank;
-//    }
+
 
     private int block(int[][]node,int row, int col) {  //
         return node[row][col];
@@ -182,56 +146,6 @@ public class Board{
         return block == SPACE;
     }
 
-//    public void checkArray(int[][] check){  //give an 2dArray to find its childs
-//        int length = dimension(check);
-//        int[][] y = new int[length][length];
-//
-//        deepCopy(neighbors(check).getFirst(),y);
-//        int x = y.length;
-//
-//        boolean com = compare(goal,y);
-//
-//        while(!close.isEmpty()){
-//            for(int i=0;i<close.size();i++) {
-//                if (compare(y, close.get(i)))
-//                    System.out.println("We are done!");
-//                else{
-//
-//                }
-//            }
-//        }
-//
-//        if(com ==true)
-//             System.out.println("First Expend node is same with goal");
-//        else
-//            System.out.println("First Expend node IS-NOT same with goal");
-//
-//        int misplace = hamming(goal,y);
-//        System.out.println("Misplace between Goal: "+misplace);
-//
-//        System.out.println("First Neighbore Gn: "+Gn);
-//    }
-//
-//    public void run(){
-//        int fn = getFn(Start);
-//        open.put(fn,Start);
-//
-//        while(!isGoal(open.firstEntry().getValue())){
-//            if(isGoal(open.firstEntry().getValue()))
-//                System.out.println("We are done!");
-//            else{
-//                close.add(open.firstEntry().getValue());
-//
-//                checkArray(open.firstEntry().getValue());
-//                open.remove(fn);
-//            }
-//
-//
-//        }
-//
-//
-//    }
-
     public void arrayCopy(int[] from, int[] here){  // No-return void copy array
         for(int i=0;i<from.length;i++)
             here[i] = from[i];
@@ -248,27 +162,24 @@ public class Board{
         int spaceRow = location[0];
         int spaceCol = location[1];
 
-        if (spaceRow > 0) {
+        if (spaceRow > 0) {  // move up
             neighbors.add(new Board(swap(xNode,spaceRow, spaceCol, spaceRow - 1, spaceCol)));
 
         }
-        if (spaceRow < dimension(xNode) - 1) {
+        if (spaceRow < dimension(xNode) - 1) { // movie Down
             neighbors.add(new Board(swap(xNode,spaceRow, spaceCol, spaceRow + 1, spaceCol)));
 
         }
-        if (spaceCol > 0)       {
+        if (spaceCol > 0)       { //move Left
             neighbors.add(new Board(swap(xNode,spaceRow, spaceCol, spaceRow, spaceCol - 1)));
 
         }
-        if (spaceCol < dimension(xNode) - 1){ //RIGHT
+        if (spaceCol < dimension(xNode) - 1){ //move RIGHT
             neighbors.add(new Board(swap(xNode,spaceRow, spaceCol, spaceRow, spaceCol + 1)));
 
         }
 
-//    while(!neighbors.isEmpty()){
-//        neighbors.getFirst();
-//    }
-        return neighbors;
+        return neighbors; //returns array of childs
     }
 
 
@@ -280,12 +191,12 @@ public class Board{
                     location[0] = row;
                     location[1] = col;
 
-                    return location;
+                    return location; //location in array
                 }
         throw new RuntimeException();
     }
 
-    public String toString() {
+    public String toString() {  // to display board
         StringBuilder str = new StringBuilder();
         str.append( "\n");
         for (int row = 0; row < xNode.length; row++) {
