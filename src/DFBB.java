@@ -40,20 +40,20 @@ public class DFBB {
         //open.add(currentNode);  //Insert in open list
         open.push(currentNode);
         int cost=open.peek().board.manhattan();;
+        System.out.println("//////////////////---[ Depth - First B & B Algorithm ]---/////////////////\n");
         while (!open.isEmpty()) {  //while not reached GOAL
-            
             currentNode = open.pop();
             if(currentNode.board.isGoal()){
-                System.out.println("Goal: "+currentNode.board.toString());
-                if(currentNode.board.manhattan()<cost)
+                System.out.println("Goal Founded: "+currentNode.board.toString());
                      cost=currentNode.board.manhattan();
+                     goalNode=currentNode;
+                     print();
             }
             close.put(Arrays.deepToString(currentNode.board.getElement()), currentNode);
 
             NodeExp++; //increment node expend variable
             for (Board b : currentNode.board.neighbors()) {  //for every childs insert in OpenList
                 if (close.containsKey(Arrays.deepToString(b.getElement()))|| b.manhattan()>cost) {
-                    //   System.out.println("SameBoard Don't put in OpenList");
                     continue; // Skip this iteration
                 } else {
                     b.setGn(currentNode.board.getGn() + 1);          //increase Level
@@ -65,7 +65,7 @@ public class DFBB {
 
         if (currentNode.board.isGoal())
             goalNode = currentNode;
-        print();
+       // print();
     } //end Solve
 
 
@@ -82,16 +82,12 @@ public class DFBB {
         if (!isSolvable())
             System.out.println("No solution possible");
         else {
-            System.out.println("//////////////////---[ Depth - First B & B Algorithm ]---/////////////////\n");
             System.out.println("Minimum number of moves = " + move());
             System.out.println("NODE EXPENDED: " + NodeExp);
-
-            System.out.println("");
-
         }
         long endTime = System.nanoTime();
         long duration=(endTime-startTime);
-        System.out.println("Execution time: "+duration);
+        System.out.println("Execution time: "+duration+"\n");
     }
 
 

@@ -3,51 +3,17 @@ import java.util.HashMap;
 import java.util.Arrays;
 
 public class AstarManh {
-
-    static int[][] Easy = new int[][]{{1, 3, 4}, {8, 6, 2}, {7, 0, 5}};
-    static int[][] Medium = new int[][]{{2, 8, 1}, {0, 4, 3}, {7, 6, 5}};
-    static int[][] Hard = new int[][]{{2, 8, 1}, {4, 6, 3}, {0, 7, 5}};
-    static int[][] Worst = new int[][]{{5, 6, 7}, {4, 0, 8}, {3, 2, 1}};
-
     static public HashMap<String, Node> close = new HashMap<>();
     static public PriorityQueue<Node> open = new PriorityQueue<>();
     static public PriorityQueue<Node> openQ = new PriorityQueue<>();
 
-
     private Node goalNode;
     static public int NodeExp = 0;
-//    public class Node implements Comparable<Node>{
-//        public Board board;
-//        public Node previous;
-//        public int moves;
-//
-//        @Override
-//        public int compareTo(Node that){
-//            if(this.priority() == (that.priority()))
-//                return 0;
-//            else if(this.priority()< that.priority())
-//                return -1;
-//            else
-//                return 1;
-//        }
-//
-//        public Node(Board b, Node prev, int m){
-//            board = b;
-//            previous = prev;
-//            moves = m;
-//        }
-//
-//        public int priority(){
-//            return board.getGn();
-//        }
-//    }
-
 
     public class Node implements Comparable<Node> {
         public Board board;
         public Node previous;
         public int moves;
-
         @Override
         public int compareTo(Node that) {
             if (this.priority() == (that.priority()))
@@ -57,13 +23,11 @@ public class AstarManh {
             else
                 return 1;
         }
-
         public Node(Board b, Node prev, int m) {
             board = b;
             previous = prev;
             moves = m;
         }
-
         public int priority() {
             return board.getFnManh();
         }
@@ -89,7 +53,6 @@ public class AstarManh {
                     open.add(new Node(b, currentNode, currentNode.moves + 1)); //create new node and add to Openlist
                 }
             }//for loop
-
         } //While Loop
 
         if (currentNode.board.isGoal())
@@ -113,7 +76,6 @@ public class AstarManh {
             System.out.println("Minimum number of moves = " + move());
             System.out.println("NODE EXPENDED: " + NodeExp);
 
-            System.out.println("");
         }
         long endTime = System.nanoTime();
         long duration=(endTime-startTime);

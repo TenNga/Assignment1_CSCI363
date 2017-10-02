@@ -83,9 +83,6 @@ public class aStar {
             System.out.println("//////////////////---[ A* Algorithm ]---/////////////////\n");
             System.out.println("Minimum number of moves = " + move());
             System.out.println("NODE EXPENDED: " + NodeExp);
-
-            System.out.println("");
-
         }
         long endTime = System.nanoTime();
         long duration=(endTime-startTime);

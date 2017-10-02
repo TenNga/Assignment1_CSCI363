@@ -4,12 +4,6 @@ import java.util.HashMap;
 import java.util.Arrays;
 
 public class IdAstart {
-
-    static int [][] Easy = new int[][]{{1,3,4}, {8,6,2}, {7,0,5}};
-    static int[][] Medium = new int[][]{{2,8,1},{0,4,3},{7,6,5}};
-    static int [][] Hard = new int[][]{{2,8,1}, {4,6,3}, {0,7,5}};
-    static int [][] Worst = new int[][]{{5,6,7}, {4,0,8}, {3,2,1}};
-
     static public HashMap<String,Node> close = new HashMap<>();
     static public PriorityQueue<Node> open = new PriorityQueue<>();
     static public PriorityQueue<Node> openQ = new PriorityQueue<>();
@@ -102,8 +96,6 @@ public class IdAstart {
             System.out.println("//////////////////---[ IDA* Algorithm ]---/////////////////\n");
             System.out.println("Minimum number of moves = " + move2());
             System.out.println("NODE EXPENDED: " + NodeExp);
-
-            System.out.println("");
 
         }
         long endTime = System.nanoTime();
