@@ -65,7 +65,8 @@ public class DFBB {
 
         if (currentNode.board.isGoal())
             goalNode = currentNode;
-       // print();
+       open.clear();
+       close.clear();
     } //end Solve
 
 

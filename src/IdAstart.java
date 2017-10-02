@@ -101,6 +101,8 @@ public class IdAstart {
         long endTime = System.nanoTime();
         long duration=(endTime-startTime);
         System.out.println("Execution time: "+duration);
+        open.clear();
+        close.clear();
     }
 
 }

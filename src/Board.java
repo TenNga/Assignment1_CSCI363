@@ -161,7 +161,7 @@ public class Board{
         //Gn++;
         int spaceRow = location[0];
         int spaceCol = location[1];
-
+        ///////MOVE :  Up -- DOWN  --  LEFT  --  RIGHT
         if (spaceRow > 0) {  // move up
             neighbors.add(new Board(swap(xNode,spaceRow, spaceCol, spaceRow - 1, spaceCol)));
 
