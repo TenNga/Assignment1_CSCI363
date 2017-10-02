@@ -53,28 +53,62 @@ public class Board{
         return displaced;
     }
     public int manhattan() {
-        int sum = 0;
-        for (int row = 0; row < xNode.length; row++)
-            for (int col = 0; col < xNode.length; col++)
-                sum += calculateDistances(row, col);
+        int raw;
+        int col;
+        int sum=0;
+        for(int i=0;i<xNode.length;i++)
+            for(int j=0;j<xNode.length;j++){
+            int location = xNode[i][j];
+            if(location==0) {
+                continue;
+            }else{
+                raw = calculateDistance(location)[0];
+                col = calculateDistance(location)[1];
+                sum += Math.abs((raw - i) + (col - j));
+            }
 
-        return sum;
-    }
-    private int calculateDistances(int row, int col) {
-        int block = block(row, col);
-
-        return (isSpace(block)) ? 0 : Math.abs(row - row(block)) + Math.abs(col - col(block));
-    }
-    private int block(int row, int col) {
-        return xNode[row][col];
-    }
-    private int row (int block) {
-        return (block - 1) / dimension(xNode);
+            }
+            return sum;
     }
 
-    private int col (int block) {
-        return (block - 1) % dimension(xNode);
+//    public int manhattan() {
+//        int sum = 0;
+//        for (int row = 0; row < xNode.length; row++)
+//            for (int col = 0; col < xNode.length; col++)
+//                sum += calculateDistances(row, col);
+//
+//        return sum;
+//    }
+//    private int calculateDistances(int row, int col) {
+//        int block = block(row, col);
+//
+//        return (isSpace(block)) ? 0 : Math.abs (Math.abs(col - col(block))-(row - row(block)));
+//    }
+//    private int block(int row, int col) {
+//        return xNode[row][col];
+//    }
+//    private int row (int block) {
+//        return (block - 1) / dimension(xNode);
+//    }
+//
+//    private int col (int block) {
+//        return (block - 1) % dimension(xNode);
+//    }
+    int[] calculateDistance(int lookFor){  //
+        int[] location = new int[2];
+        for(int i=0;i<goal.length;i++)
+            for(int j=0;j<goal.length;j++){
+                if(goal[i][j]==lookFor) {
+                    location[0]=i;
+                    location[1]=j;
+                    return location;
+                }
+            }
+
+        return location;
     }
+
+
     private void deepCopy(int[][] from, int[][] here){   // Copy FromArray to HereArray
         //int[][] copy = new int[][size];
         for (int i = 0; i < from.length; i++) {
@@ -100,8 +134,12 @@ public class Board{
     }
     public int getFn(){   //returns F(n)= B(n)+H(n)
 
-        int Fn = (getGn()+manhattan());
+        int Fn = (Gn+hamming());
 
+        return Fn;
+    }
+    public int getFnManh(){
+        int Fn = (Gn+manhattan());
         return Fn;
     }
 
